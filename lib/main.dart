@@ -1,12 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
 
 import 'package:animations/animations.dart';
 import 'package:ezstudies/agenda/agenda.dart';
 import 'package:ezstudies/agenda/agenda_view_model.dart';
 import 'package:ezstudies/homeworks/homeworks.dart';
 import 'package:ezstudies/search/search.dart';
-import 'package:ezstudies/settings/Settings.dart';
+import 'package:ezstudies/services/login.dart';
+import 'package:ezstudies/services/store.dart';
+import 'package:ezstudies/settings/settings.dart';
+import 'package:ezstudies/storage/entry.dart';
 import 'package:ezstudies/utils/notifications.dart';
 import 'package:ezstudies/utils/preferences.dart';
 import 'package:ezstudies/utils/style.dart';
@@ -17,38 +22,54 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
+import 'package:requests/requests.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:universal_io/io.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_strategy/url_strategy.dart';
 
-import 'config/env.dart';
-import 'firebase_options.dart';
+import 'package:http/http.dart' as http;
 
 void main() async {
-  runZonedGuarded<Future<void>>(() async {
+    Requests res = Requests();
     WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-    if (!kIsWeb) {
-      await FirebaseCrashlytics.instance
-          .setCrashlyticsCollectionEnabled(!kDebugMode);
-    }
     if (!Platform.isIOS) {
       SystemTheme.accentColor;
     }
     await Preferences.load();
+    final StorageService _storageService = StorageService();
+    if(await _storageService.exists("cookies")) {
+      await Requests.clearStoredCookies("services-web.cyu.fr");
+      String cookie_last = await _storageService.get("cookies") ?? ""; // null should never happen
+      Map cookie_map = json.decode(cookie_last!);
+      var cookieJar = await Requests.getStoredCookies("services-web.cyu.fr");
+      cookie_map.forEach((k, v) async {
+        cookieJar[k] = Cookie(k, v);
+      });
+      await Requests.setStoredCookies("services-web.cyu.fr", cookieJar);
+
+      var refresh = await Requests.get("https://services-web.cyu.fr/calendar");
+      print(refresh.body.isEmpty );
+      if(refresh.body.isEmpty || refresh.statusCode == 302) {
+        String name = Preferences.sharedPreferences.getString(Preferences.name) ?? "";
+        String password = await _storageService.get("password") ?? "";
+        LoginService.login(name, password);
+        var cookies_now = await Requests.getStoredCookies("services-web.cyu.fr");
+        Map<String, String> cookies = {};
+
+        for (Cookie cookie in cookies_now.values) {
+          cookies[cookie.name] = cookie.value;
+        }
+        String cookie_json = json.encode(cookies);
+        _storageService.put(Entry("cookies", cookie_json));
+      }
+    }
     await Style.load();
     await Notifications.initNotifications();
     setPathUrlStrategy();
     runApp(const EzStudies());
-  },
-      (error, stack) =>
-          FirebaseCrashlytics.instance.recordError(error, stack, fatal: true));
 }
 
 class EzStudies extends StatefulWidget {
@@ -106,12 +127,7 @@ class _EzStudiesState extends State<EzStudies> {
           Locale('fr', ''),
         ],
         title: "EzStudies",
-        home: ((Preferences.sharedPreferences.getString(Preferences.name) ?? "")
-                    .isNotEmpty &&
-                (Preferences.sharedPreferences
-                            .getString(Preferences.password) ??
-                        "")
-                    .isNotEmpty)
+        home: (Preferences.sharedPreferences.getString(Preferences.name) ?? "").isNotEmpty
             ? Main(
                 reloadTheme: () => setState(() {}),
               )
@@ -130,7 +146,10 @@ class Main extends StatefulWidget {
 class _MainState extends State<Main> {
   int selectedIndex = 0;
   bool showBanner = true;
+  late final AppLifecycleListener _listener;
   AgendaViewModel agendaViewModel = AgendaViewModel();
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -192,7 +211,7 @@ class _MainState extends State<Main> {
                           onPressed: () => setState(() => showBanner = false),
                           icon: Icon(Icons.close, color: Style.text))
                     ])),
-            onTap: () => launchUrl(Uri.parse("${Secret.server_url}install"),
+            onTap: () => launchUrl(Uri.parse("https://ezstudies.alwaysdata.net/install"),
                 mode: LaunchMode.externalApplication)),
         bottomNavigationBar
       ]);
@@ -221,6 +240,7 @@ class _MainState extends State<Main> {
   @override
   void initState() {
     super.initState();
+
     checkUpdate();
   }
 
@@ -228,14 +248,14 @@ class _MainState extends State<Main> {
     const List<IconData> icons = <IconData>[
       Icons.view_agenda_outlined,
       Icons.search_outlined,
-      if (!kIsWeb) Icons.library_books_outlined,
+      Icons.library_books_outlined,
       Icons.settings_outlined
     ];
 
     const List<IconData> iconsSelected = <IconData>[
       Icons.view_agenda,
       Icons.search,
-      if (!kIsWeb) Icons.library_books,
+      Icons.library_books,
       Icons.settings
     ];
 
@@ -273,7 +293,7 @@ class _MainState extends State<Main> {
                             onPressed: () {
                               Navigator.pop(context);
                               launchUrl(
-                                  Uri.parse("${Secret.server_url}install"),
+                                  Uri.parse("https://ezstudies.alwaysdata.net/install"),
                                   mode: LaunchMode.externalApplication);
                             },
                             child: Text(AppLocalizations.of(context)!.update)),

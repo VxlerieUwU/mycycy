@@ -9,7 +9,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../config/env.dart';
 import '../utils/cipher.dart';
 import '../utils/notifications.dart';
 import '../utils/preferences.dart';
@@ -127,11 +126,7 @@ class _SettingsState extends State<Settings> {
                   title:
                       Text(AppLocalizations.of(context)!.account, style: font),
                   value: Text(
-                      decrypt(
-                          Preferences.sharedPreferences
-                                  .getString(Preferences.name) ??
-                              "",
-                          Secret.cipher_key),
+                      Preferences.sharedPreferences.getString(Preferences.name)!,
                       style: font)),
               SettingsTile(
                 leading: const Icon(Icons.logout),

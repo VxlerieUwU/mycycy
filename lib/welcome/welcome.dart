@@ -1,9 +1,18 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:ezstudies/services/login.dart';
+import 'package:ezstudies/services/store.dart';
+import 'package:ezstudies/storage/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:ms_undraw/ms_undraw.dart';
+import 'package:requests/requests.dart';
+import 'package:html/parser.dart';
+import 'package:xpath_selector_html_parser/src/ext.dart';
 
-import '../config/env.dart';
 import '../main.dart';
 import '../utils/cipher.dart';
 import '../utils/preferences.dart';
@@ -124,26 +133,29 @@ class _WelcomeState extends State<Welcome> {
             ]),
       );
     } else {
-      String encryptedName = encrypt(name, Secret.cipher_key);
-      String encryptedPassword = encrypt(password, Secret.cipher_key);
-      http.Response response = await http.post(
-          Uri.parse("${Secret.server_url}api/index.php"),
-          body: <String, String>{
-            "request": "cyu_check",
-            "name": encryptedName,
-            "password": encryptedPassword
-          }).catchError((_) => http.Response("", 404));
-      if (response.statusCode == 200 && response.body == "1") {
+      try {
+        final StorageService _storageService = StorageService();
+        String id = await LoginService.login(name, password);
+        await _storageService.put(Entry("password", password));
+        var cookies_now = await Requests.getStoredCookies("services-web.cyu.fr");
+        Map<String, String> cookies = {};
+
+        for (Cookie cookie in cookies_now.values) {
+          cookies[cookie.name] = cookie.value;
+        }
+        String cookie_json = json.encode(cookies);
+        _storageService.put(Entry("cookies", cookie_json));
+
         Preferences.sharedPreferences
-            .setString(Preferences.name, encryptedName)
+            .setString(Preferences.name, name)
             .then((value) => Preferences.sharedPreferences
-                    .setString(Preferences.password, encryptedPassword)
-                    .then((value) {
-                  setState(() => loading = false);
-                  Navigator.pushReplacement(
-                      context, MaterialPageRoute(builder: (_) => const Main()));
-                }));
-      } else {
+            .setString(Preferences.id, id)
+            .then((value) {
+              setState(() => loading = false);
+              Navigator.pushReplacement(
+                  context, MaterialPageRoute(builder: (_) => const Main()));
+            }));
+      } on AssertionError{
         setState(() => loading = false);
         showDialog(
           context: context,

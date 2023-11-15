@@ -10,10 +10,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:http/http.dart' as http;
+  import 'package:intl/intl.dart';
+import 'package:requests/requests.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:stacked/stacked.dart';
 
-import '../config/env.dart';
 import '../utils/notifications.dart';
 import '../utils/preferences.dart';
 import '../utils/style.dart';
@@ -392,17 +393,15 @@ class _AgendaState extends State<Agenda> {
           loading = false;
         }, scroll: scroll);
       } else {
-        String url = "${Secret.server_url}api/index.php";
-        String name =
-            Preferences.sharedPreferences.getString(Preferences.name) ?? "";
-        String password =
-            Preferences.sharedPreferences.getString(Preferences.password) ?? "";
-        http.Response response = await http.post(Uri.parse(url),
-            body: <String, String>{
-              "request": "cyu",
-              "name": name,
-              "password": password
-            }).catchError((_) => http.Response("", 404));
+        var response = await Requests.post("https://services-web.cyu.fr/calendar/Home/GetCalendarData",
+            body: {
+              'start': DateFormat('yyyy-MM-dd').format(DateTime.now().subtract(const Duration(days: 15))),
+              'end': DateFormat('yyyy-MM-dd').format(DateTime.now().add(const Duration(days: 15))),
+              'resType': '104',
+              'calView': 'listWeek',
+              'federationIds[]': Preferences.sharedPreferences.getString(Preferences.id)
+            },
+            bodyEncoding: RequestBodyEncoding.FormURLEncoded);
         if (response.statusCode == 200 && response.body.isNotEmpty) {
           if (kIsWeb) {
             setState(() {
@@ -459,18 +458,17 @@ class _AgendaState extends State<Agenda> {
         loading = false;
       }, scroll: scroll);
     } else if (widget.search) {
-      String url = "${Secret.server_url}api/index.php";
-      String name =
-          Preferences.sharedPreferences.getString(Preferences.name) ?? "";
-      String password =
-          Preferences.sharedPreferences.getString(Preferences.password) ?? "";
-      http.Response response = await http.post(Uri.parse(url),
-          body: <String, String>{
-            "request": "cyu",
-            "name": name,
-            "password": password,
-            "id": widget.data!.id
-          }).catchError((_) => http.Response("", 404));
+
+
+      var response = await Requests.post("https://services-web.cyu.fr/calendar/Home/GetCalendarData",
+          body: {
+            'start': DateFormat('yyyy-MM-dd').format(DateTime.now().subtract(Duration(days: 15))),
+            'end': DateFormat('yyyy-MM-dd').format(DateTime.now().add(Duration(days: 15))),
+            'resType': '104',
+            'calView': 'listWeek',
+            'federationIds[]': widget.data!.id
+          },
+          bodyEncoding: RequestBodyEncoding.FormURLEncoded);
       if (response.statusCode == 200 && response.body.isNotEmpty) {
         setState(() {
           list = processJson(response.body);

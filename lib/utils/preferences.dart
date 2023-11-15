@@ -16,6 +16,7 @@ class Preferences {
   static const String accent = "accent";
   static const String useSystemAccent = "use_system_accent";
   static const String theme = "theme";
+  static const String id = "id";
 
   static Future<void> load() async {
     sharedPreferences = await SharedPreferences.getInstance();

@@ -65,7 +65,7 @@ L'API est incluse dans ce projet pour faciliter le déploiement de l'application
 - Flutter SDK
 - FireBase CLI (optionnel)
 
-Note : L'application est liée à FireBase dans l'unique but de profiter de FireBase Crashlytics. FireBase est donc optionnel au fonctionnement de l'application.
+Note : L'application est liée à Fi**reBase dans l'unique but de profiter de FireBase Crashlytics. FireBase est donc optionnel au fonctionnement de l'application.**
 
 ### Pour compiler l'application, il faut d'abord :
 - Lier l'application à FireBase ou supprimer l'implémentation de FireBase

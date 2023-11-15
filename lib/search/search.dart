@@ -5,9 +5,9 @@ import 'package:ezstudies/search/search_cell_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
+import 'package:requests/requests.dart';
 
 import '../agenda/agenda.dart';
-import '../config/env.dart';
 import '../utils/preferences.dart';
 import '../utils/style.dart';
 import '../utils/templates.dart';
@@ -144,18 +144,8 @@ class _SearchState extends State<Search> {
   Future<void> search() async {
     if (query.length >= 2) {
       setState(() => loading = true);
-      String url = "${Secret.server_url}api/index.php";
-      String name =
-          Preferences.sharedPreferences.getString(Preferences.name) ?? "";
-      String password =
-          Preferences.sharedPreferences.getString(Preferences.password) ?? "";
-      http.Response response =
-          await http.post(Uri.parse(url), body: <String, String>{
-        "request": "cyu_search",
-        "name": name,
-        "password": password,
-        "query": Uri.encodeQueryComponent(removeDiacritics(query))
-      }).catchError((_) => http.Response("", 404));
+      var response =
+          await Requests.get("https://services-web.cyu.fr/calendar/Home/ReadResourceListItems?myResources=false&searchTerm=$query&pageSize=1000&resType=104");
       if (response.statusCode == 200 && response.body.isNotEmpty) {
         List<dynamic> results = jsonDecode(response.body)["results"];
         List<SearchCellData> newList = [];
