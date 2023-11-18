@@ -1,16 +1,15 @@
 import 'dart:convert';
 
-import 'package:ezstudies/agenda/agenda_details.dart';
-import 'package:ezstudies/agenda/agenda_view_model.dart';
-import 'package:ezstudies/agenda/agenda_week_view.dart';
-import 'package:ezstudies/search/search_cell_data.dart';
-import 'package:ezstudies/utils/database_helper.dart';
+import 'package:mycycy/agenda/agenda_details.dart';
+import 'package:mycycy/agenda/agenda_view_model.dart';
+import 'package:mycycy/agenda/agenda_week_view.dart';
+import 'package:mycycy/search/search_cell_data.dart';
+import 'package:mycycy/utils/database_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:html_unescape/html_unescape.dart';
-import 'package:http/http.dart' as http;
-  import 'package:intl/intl.dart';
+import 'package:intl/intl.dart';
 import 'package:requests/requests.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:stacked/stacked.dart';

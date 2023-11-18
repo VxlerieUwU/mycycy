@@ -1,6 +1,6 @@
 import 'package:animations/animations.dart';
-import 'package:ezstudies/utils/style.dart';
-import 'package:ezstudies/utils/timestamp_utils.dart';
+import 'package:mycycy/utils/style.dart';
+import 'package:mycycy/utils/timestamp_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

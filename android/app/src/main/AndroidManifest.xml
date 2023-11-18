@@ -1,10 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.klbgr.ezstudies">
+    package="fr.vxlerie.mycycy">
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-        android:label="EzStudies"
+        android:label="MyCyCy"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

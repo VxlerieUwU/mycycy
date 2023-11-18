@@ -1,4 +1,4 @@
-import 'package:ezstudies/utils/database_helper.dart';
+import 'package:mycycy/utils/database_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

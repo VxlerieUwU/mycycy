@@ -1,5 +1,5 @@
 <?php 
 
-header("Location: https://github.com/Klbgr/EzStudies-Flutter/releases/latest");
+header("Location: https://github.com/VxlerieUwU/MyCyCy/releases/latest");
 
 ?>

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:diacritic/diacritic.dart';
-import 'package:ezstudies/search/search_cell_data.dart';
+import 'package:mycycy/search/search_cell_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;

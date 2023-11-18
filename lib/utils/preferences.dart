@@ -8,6 +8,7 @@ class Preferences {
   static const String helpAgenda = "help_agenda";
   static const String helpTrash = "help_trash";
   static const String helpSearchAgenda = "help_search_agenda";
+  static const String displayName = "display_name";
   static const String name = "name";
   static const String password = "password";
   static const String notificationsHomeworks = "notifications_homeworks";

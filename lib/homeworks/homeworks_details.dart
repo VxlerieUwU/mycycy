@@ -1,5 +1,5 @@
-import 'package:ezstudies/homeworks/homeworks_cell_data.dart';
-import 'package:ezstudies/utils/database_helper.dart';
+import 'package:mycycy/homeworks/homeworks_cell_data.dart';
+import 'package:mycycy/utils/database_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

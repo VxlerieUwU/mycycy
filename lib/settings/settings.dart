@@ -1,7 +1,7 @@
-import 'package:ezstudies/settings/color_dialog.dart';
-import 'package:ezstudies/settings/theme_dialog.dart';
-import 'package:ezstudies/utils/database_helper.dart';
-import 'package:ezstudies/welcome/welcome.dart';
+import 'package:mycycy/settings/color_dialog.dart';
+import 'package:mycycy/settings/theme_dialog.dart';
+import 'package:mycycy/utils/database_helper.dart';
+import 'package:mycycy/welcome/welcome.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -9,7 +9,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../utils/cipher.dart';
 import '../utils/notifications.dart';
 import '../utils/preferences.dart';
 import '../utils/style.dart';
@@ -126,7 +125,7 @@ class _SettingsState extends State<Settings> {
                   title:
                       Text(AppLocalizations.of(context)!.account, style: font),
                   value: Text(
-                      Preferences.sharedPreferences.getString(Preferences.name)!,
+                      Preferences.sharedPreferences.getString(Preferences.displayName)!,
                       style: font)),
               SettingsTile(
                 leading: const Icon(Icons.logout),
@@ -143,12 +142,12 @@ class _SettingsState extends State<Settings> {
                       style: font),
                   onPressed: (context) => launchUrl(
                       Uri.parse(
-                          "https://docs.google.com/forms/d/e/1FAIpQLSeEDjP8qGxxHHmIadZYaxhaDkZw1_4rqaNBbegskcjbTUlxiQ/viewform?usp=pp_url"),
+                          "https://github.com/VxlerieUwU/mycycy"),
                       mode: LaunchMode.externalApplication)),
               SettingsTile(
                   leading: const Icon(Icons.logo_dev),
                   title:
-                      Text(AppLocalizations.of(context)!.made_by, style: font),
+                      Text(AppLocalizations.of(context)!.originally_made_by, style: font),
                   value: Text("Antoine Qiu (https://github.com/Klbgr)",
                       style: font),
                   onPressed: (context) => launchUrl(
@@ -158,10 +157,10 @@ class _SettingsState extends State<Settings> {
                   leading: const Icon(Icons.code),
                   title: Text(AppLocalizations.of(context)!.source_code,
                       style: font),
-                  value: Text("https://github.com/Klbgr/EzStudies-Flutter",
+                  value: Text("https://github.com/VxlerieUwU/mycycy",
                       style: font),
                   onPressed: (context) => launchUrl(
-                      Uri.parse("https://github.com/Klbgr/EzStudies-Flutter"),
+                      Uri.parse("https://github.com/VxlerieUwU/mycycy"),
                       mode: LaunchMode.externalApplication)),
               SettingsTile(
                   leading: const Icon(Icons.numbers),

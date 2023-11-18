@@ -1,5 +1,5 @@
-import 'package:ezstudies/homeworks/homeworks_cell_data.dart';
-import 'package:ezstudies/utils/preferences.dart';
+import 'package:mycycy/homeworks/homeworks_cell_data.dart';
+import 'package:mycycy/utils/preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../agenda/agenda_cell_data.dart';

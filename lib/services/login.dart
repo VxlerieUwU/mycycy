@@ -20,6 +20,7 @@ class LoginService {
           bodyEncoding: RequestBodyEncoding.FormURLEncoded);
       assert(login_res.statusCode == 302);
       //  password error path
+
       //assert(login_res.statusCode != 302);  // incorrect password
 
       Uri login_uri = Uri.parse(login_res.headers["location"]!);

@@ -1,4 +1,4 @@
-import 'package:ezstudies/storage/entry.dart';
+import 'package:mycycy/storage/entry.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 

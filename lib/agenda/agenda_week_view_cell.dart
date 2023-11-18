@@ -1,6 +1,6 @@
-import 'package:ezstudies/agenda/agenda_cell_data.dart';
-import 'package:ezstudies/agenda/agenda_details.dart';
-import 'package:ezstudies/utils/templates.dart';
+import 'package:mycycy/agenda/agenda_cell_data.dart';
+import 'package:mycycy/agenda/agenda_details.dart';
+import 'package:mycycy/utils/templates.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/style.dart';

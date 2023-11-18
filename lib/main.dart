@@ -4,18 +4,18 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:animations/animations.dart';
-import 'package:ezstudies/agenda/agenda.dart';
-import 'package:ezstudies/agenda/agenda_view_model.dart';
-import 'package:ezstudies/homeworks/homeworks.dart';
-import 'package:ezstudies/search/search.dart';
-import 'package:ezstudies/services/login.dart';
-import 'package:ezstudies/services/store.dart';
-import 'package:ezstudies/settings/settings.dart';
-import 'package:ezstudies/storage/entry.dart';
-import 'package:ezstudies/utils/notifications.dart';
-import 'package:ezstudies/utils/preferences.dart';
-import 'package:ezstudies/utils/style.dart';
-import 'package:ezstudies/welcome/welcome.dart';
+import 'package:mycycy/agenda/agenda.dart';
+import 'package:mycycy/agenda/agenda_view_model.dart';
+import 'package:mycycy/homeworks/homeworks.dart';
+import 'package:mycycy/search/search.dart';
+import 'package:mycycy/services/login.dart';
+import 'package:mycycy/services/store.dart';
+import 'package:mycycy/settings/settings.dart';
+import 'package:mycycy/storage/entry.dart';
+import 'package:mycycy/utils/notifications.dart';
+import 'package:mycycy/utils/preferences.dart';
+import 'package:mycycy/utils/style.dart';
+import 'package:mycycy/welcome/welcome.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -69,17 +69,17 @@ void main() async {
     await Style.load();
     await Notifications.initNotifications();
     setPathUrlStrategy();
-    runApp(const EzStudies());
+    runApp(const MyCyCy());
 }
 
-class EzStudies extends StatefulWidget {
-  const EzStudies({Key? key}) : super(key: key);
+class MyCyCy extends StatefulWidget {
+  const MyCyCy({Key? key}) : super(key: key);
 
   @override
-  State<EzStudies> createState() => _EzStudiesState();
+  State<MyCyCy> createState() => _MyCyCyState();
 }
 
-class _EzStudiesState extends State<EzStudies> {
+class _MyCyCyState extends State<MyCyCy> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -97,11 +97,6 @@ class _EzStudiesState extends State<EzStudies> {
                         ? Style.primary
                         : Style.text),
                 entryModeIconColor: Style.text),
-            textTheme:
-                GoogleFonts.openSansTextTheme(Theme.of(context).textTheme.apply(
-                      bodyColor: Style.text,
-                      displayColor: Style.text,
-                    )),
             textSelectionTheme:
                 TextSelectionThemeData(selectionColor: Style.primary),
             colorScheme: ColorScheme.fromSwatch().copyWith(
@@ -126,7 +121,7 @@ class _EzStudiesState extends State<EzStudies> {
           Locale('en', ''),
           Locale('fr', ''),
         ],
-        title: "EzStudies",
+        title: "mycycy",
         home: (Preferences.sharedPreferences.getString(Preferences.name) ?? "").isNotEmpty
             ? Main(
                 reloadTheme: () => setState(() {}),
@@ -275,7 +270,7 @@ class _MainState extends State<Main> {
     if (!kIsWeb) {
       http.Response response = await http
           .get(Uri.parse(
-              "https://api.github.com/repos/Klbgr/EzStudies-Flutter/releases/latest"))
+              "https://api.github.com/repos/VxlerieUwU/MyCyCy/releases/latest"))
           .catchError((_) => http.Response("", 404));
       if (response.statusCode == 200 && response.body.isNotEmpty) {
         String tag = jsonDecode(response.body)["tag_name"];

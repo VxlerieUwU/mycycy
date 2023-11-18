@@ -1,20 +1,14 @@
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:ezstudies/services/login.dart';
-import 'package:ezstudies/services/store.dart';
-import 'package:ezstudies/storage/entry.dart';
+import 'package:mycycy/services/login.dart';
+import 'package:mycycy/services/store.dart';
+import 'package:mycycy/storage/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:http/http.dart' as http;
 import 'package:ms_undraw/ms_undraw.dart';
 import 'package:requests/requests.dart';
-import 'package:html/parser.dart';
-import 'package:xpath_selector_html_parser/src/ext.dart';
 
 import '../main.dart';
-import '../utils/cipher.dart';
 import '../utils/preferences.dart';
 import '../utils/style.dart';
 import '../utils/templates.dart';

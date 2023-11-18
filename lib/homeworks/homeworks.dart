@@ -1,6 +1,6 @@
-import 'package:ezstudies/homeworks/homeworks_details.dart';
-import 'package:ezstudies/utils/database_helper.dart';
-import 'package:ezstudies/utils/templates.dart';
+import 'package:mycycy/homeworks/homeworks_details.dart';
+import 'package:mycycy/utils/database_helper.dart';
+import 'package:mycycy/utils/templates.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/date_symbol_data_local.dart';
